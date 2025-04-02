@@ -1,0 +1,78 @@
+
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { fetchCityWeather } from '@/store/weatherSlice';
+import WeatherCard from './WeatherCard';
+import { Button } from '@/components/ui/button';
+import { AppDispatch } from '@/store';
+import { Link } from 'react-router-dom';
+import { RefreshCw } from 'lucide-react';
+
+const WeatherSection: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cities, loading, error } = useSelector((state: RootState) => state.weather);
+  const { favoriteCities } = useSelector((state: RootState) => state.userPreferences);
+  
+  useEffect(() => {
+    // Fetch weather data for favorite cities
+    favoriteCities.forEach(city => {
+      dispatch(fetchCityWeather(city));
+    });
+  }, [dispatch, favoriteCities]);
+  
+  // Function to refresh all weather data
+  const handleRefresh = () => {
+    favoriteCities.forEach(city => {
+      dispatch(fetchCityWeather(city));
+    });
+  };
+  
+  return (
+    <section className="data-section">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="section-title">Weather</h2>
+        <div className="flex space-x-2">
+          <Button onClick={handleRefresh} size="sm" variant="outline" className="flex items-center gap-1">
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+          <Button asChild size="sm">
+            <Link to="/weather">View All</Link>
+          </Button>
+        </div>
+      </div>
+      
+      {error && (
+        <div className="p-4 bg-destructive/10 text-destructive rounded-lg mb-4">
+          {error}
+        </div>
+      )}
+      
+      {loading && cities.length === 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="h-48 loading-pulse rounded-lg"></div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {cities.length > 0 ? (
+            cities.slice(0, 3).map(city => (
+              <WeatherCard key={city.cityId} weather={city} />
+            ))
+          ) : (
+            <div className="col-span-full text-center p-8 bg-card rounded-lg">
+              <p className="text-muted-foreground">No weather data available.</p>
+              <Button onClick={handleRefresh} className="mt-4">
+                Load Weather Data
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default WeatherSection;
