@@ -1,6 +1,6 @@
 
 // API key would typically be in environment variables
-const API_KEY = 'f5b1047bb44445b9a448ba7e3fcaa0d7'; // Replace with actual key in production
+const API_KEY = 'demo_api'; // Replace with actual key in production
 const BASE_URL = 'https://newsdata.io/api/1/news';
 
 export async function fetchCryptoNews() {
