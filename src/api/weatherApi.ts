@@ -1,6 +1,6 @@
 
 // API key would typically be in environment variables
-const API_KEY = '42a9bda8accc2ac51e4f52dad95ef97f'; // Replace with actual key in production
+const API_KEY = 'demo_api'; // Replace with actual key in production
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 export async function fetchWeatherForCity(city: string) {
