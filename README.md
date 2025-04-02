@@ -1,7 +1,6 @@
 <h1>Crypto-Weather-Nexus</h1>
 
 ### a modern, multi-page dashboard combining weather data, Realtime Cryptocurrency market, and real-time notifications via WebSocket.
-### Next.js (v13+) with file-based routing.
 ### React (hooks for state and lifecycle).
 ### Redux (with async middleware like Redux Thunk or Saga).
 ### Tailwind CSS for styling.
